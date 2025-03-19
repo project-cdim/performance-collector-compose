@@ -1,0 +1,3 @@
+[submodule "performance-collector/performance-collector"]
+	path = performance-collector/performance-collector
+	url = https://github.com/project-cdim/performance-collector.git

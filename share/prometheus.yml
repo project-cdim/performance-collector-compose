@@ -1,0 +1,17 @@
+global:
+  scrape_interval:     180s
+  evaluation_interval: 180s
+
+scrape_configs: []
+
+remote_write:
+  - url: "http://performance-manager:8428/api/v1/write"
+
+rule_files:
+  - /etc/prometheus/alert.rules
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - alert-manager:9093

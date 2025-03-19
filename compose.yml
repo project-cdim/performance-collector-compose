@@ -1,0 +1,64 @@
+services:
+        
+  performance-collector-scrape:
+    image: prom/prometheus:v3.1.0
+    container_name: performance-collector-scrape
+    command:
+      - --web.enable-lifecycle
+      - --config.file=/etc/prometheus/prometheus.yml
+    tty: true
+    ports:
+      - 9090:9090/tcp
+    volumes:
+      - ./share:/etc/prometheus
+      - prometheus_data:/prometheus
+    networks:
+      cdim-net:
+    logging:
+      options:
+        max-size: 50m
+
+  performance-collector:
+    build:
+      context: .
+      dockerfile: ./performance-collector/Dockerfile
+    container_name: performance-collector
+    tty: true
+    ports:
+      - 8284:8080/tcp
+      - 3509:3500
+    volumes:
+      - performance-collector-log:/var/log/cdim
+      - ./performance-collector/performance-collector:/app
+      - ./share:/files
+    networks:
+      cdim-net:
+    logging:
+      options:
+        max-size: 50m
+        
+  performance-collector-dapr:
+    image: daprio/daprd:edge
+    container_name: performance-collector-dapr
+    command:
+      [
+        "./daprd",
+        "-app-id", "performance-collector",
+        "-app-port", "8080",
+        "-dapr-http-port", "3500",
+        "-placement-host-address", "placement:50006",
+      ]
+    depends_on:
+      - performance-collector
+    network_mode: "service:performance-collector"
+    logging:
+      options:
+        max-size: 50m
+
+networks:
+  cdim-net:
+    external: true
+
+volumes:
+  performance-collector-log:
+  prometheus_data:

@@ -1,0 +1,67 @@
+groups:
+- name: status-alert
+  rules:
+
+  - alert: CPU_status_state
+    expr: CPU_status_state == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: CPU status state 0
+
+  - alert: CPU_status_health
+    expr: CPU_status_health == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: CPU status health 0
+      
+  - alert: memory_status_state
+    expr: memory_status_state == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: memory status state 0
+
+  - alert: memory_status_health
+    expr: memory_status_health == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: memory status health 0
+
+  - alert: storage_status_state
+    expr: storage_status_state == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: storage status state 0
+
+  - alert: storage_status_health
+    expr: storage_status_health == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: storage status health 0
+
+  - alert: networkInterface_status_state
+    expr: networkInterface_status_state == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: networkInterface status state 0
+
+  - alert: networkInterface_status_health
+    expr: networkInterface_status_health == 0
+    for: 10s
+    labels:
+      severity: critical
+    annotations:
+      summary: networkInterface status health 0
