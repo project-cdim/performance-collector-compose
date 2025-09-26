@@ -1,5 +1,5 @@
 services:
-        
+
   performance-collector-scrape:
     image: prom/prometheus:v3.1.0
     container_name: performance-collector-scrape
@@ -31,12 +31,13 @@ services:
       - performance-collector-log:/var/log/cdim
       - ./performance-collector/performance-collector:/app
       - ./share:/files
+      - ./performance-collector/configs/:/app/configs
     networks:
       cdim-net:
     logging:
       options:
         max-size: 50m
-        
+
   performance-collector-dapr:
     image: daprio/daprd:edge
     container_name: performance-collector-dapr
@@ -47,7 +48,10 @@ services:
         "-app-port", "8080",
         "-dapr-http-port", "3500",
         "-placement-host-address", "placement:50006",
+        "-resources-path","/components",
       ]
+    volumes:
+      - "./performance-collector/dapr/components/:/components"
     depends_on:
       - performance-collector
     network_mode: "service:performance-collector"
